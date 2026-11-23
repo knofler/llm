@@ -1,0 +1,64 @@
+# llm — local stack. Container names use the folder name as prefix (llm-).
+# RAM ceiling for the default profile: 2 GB (app 1g + rust 768m).
+#   docker compose up -d                 → web on http://localhost:3320
+#   docker compose run --rm rust cargo test
+#   docker compose run --rm rust wasm-pack build crates/core --target web
+name: llm
+
+services:
+  app:
+    container_name: llm-app
+    image: node:22-bookworm-slim
+    working_dir: /app/apps/web
+    command: sh -c "npm ci --no-audit --no-fund && npm run dev -- -H 0.0.0.0 -p 3000"
+    ports:
+      - "3320:3000"
+    volumes:
+      - ./:/app
+      - llm-web-node-modules:/app/apps/web/node_modules
+      - llm-web-next:/app/apps/web/.next
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+      WATCHPACK_POLLING: "true"
+    mem_limit: 1g
+    restart: "no"
+
+  rust:
+    container_name: llm-rust
+    build:
+      context: .
+      dockerfile: docker/rust.Dockerfile
+    working_dir: /app
+    command: sleep infinity
+    volumes:
+      - ./:/app
+      - llm-cargo-target:/app/target
+      - llm-cargo-registry:/usr/local/cargo/registry
+    mem_limit: 768m
+    restart: "no"
+
+  # Browser smoke tests for both tracks (compose profile, so not part of the
+  # 2 GB app stack):  docker compose --profile e2e run --rm e2e
+  e2e:
+    container_name: llm-e2e
+    image: mcr.microsoft.com/playwright:v1.55.0-noble
+    profiles: ["e2e"]
+    working_dir: /app/apps/web
+    command: npx playwright test
+    depends_on:
+      - app
+    volumes:
+      - ./:/app
+      - llm-web-node-modules:/app/apps/web/node_modules
+    environment:
+      BASE_URL: http://app:3000
+      CI: ${CI:-}
+    ipc: host
+    mem_limit: 1g
+    restart: "no"
+
+volumes:
+  llm-web-node-modules:
+  llm-web-next:
+  llm-cargo-target:
+  llm-cargo-registry:

@@ -1,0 +1,142 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Two skins on one engine. NO BLUE: every colour here has red >= blue
+   (scripts/guard.mjs fails the build otherwise).
+   Adults = the bluegreyboxes workbench (dark). Kids = a picture book (warm paper). */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* adults */
+  --color-a-page: #0b0b0a;
+  --color-a-alt: #100f0e;
+  --color-a-panel: #141312;
+  --color-a-node: #1a1918;
+  --color-a-rule: #292725;
+  --color-a-wire: #4a4743;
+  --color-a-fg: #eeece8;
+  --color-a-stand: #bcb8b0;
+  --color-a-cap: #9a958c;
+  --color-a-acc: #f0a868;
+  --color-a-acc-ink: #1a1208;
+  --color-a-acc-soft: #2a1d12;
+
+  /* kids */
+  --color-k-paper: #fbf1df;
+  --color-k-page: #fffaf1;
+  --color-k-ink: #3a2c24;
+  --color-k-soft: #7a6555;
+  --color-k-line: #ead9bd;
+  --color-k-tomato: #e2553f;
+  --color-k-mustard: #f0ad2e;
+  --color-k-leaf: #7fae4e;
+  --color-k-rose: #f3a6a0;
+  --color-k-peach: #f7c89b;
+  --color-k-white: #ffffff;
+
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Menlo, monospace;
+  --font-kid: var(--font-fredoka), "Trebuchet MS", sans-serif;
+  --font-kidbody: var(--font-andika), "Trebuchet MS", sans-serif;
+
+  --animate-rise: rise 0.35s both;
+  --animate-drop: drop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  --animate-pop: pop 0.5s cubic-bezier(0.3, 1.8, 0.5, 1) both;
+  --animate-bob: bob 3.2s ease-in-out infinite;
+
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+  @keyframes drop { from { opacity: 0; transform: translateY(-14px) rotate(-8deg); } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.4) rotate(-12deg); } }
+  @keyframes bob { 50% { transform: translateY(-5px); } }
+}
+
+/* shadcn semantic tokens, mapped onto the warm palette */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: #0b0b0a;
+  --foreground: #eeece8;
+  --primary: #f0a868;
+  --primary-foreground: #1a1208;
+  --secondary: #1a1918;
+  --secondary-foreground: #eeece8;
+  --muted: #141312;
+  --muted-foreground: #9a958c;
+  --accent: #2a1d12;
+  --accent-foreground: #f0a868;
+  --border: #292725;
+  --input: #4a4743;
+  --ring: #f0a868;
+  --destructive: #e2553f;
+  color-scheme: dark;
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-a-page text-a-fg font-serif antialiased; }
+  :focus-visible { outline: 2px solid var(--color-a-acc); outline-offset: 3px; }
+  [data-track="kids"] :focus-visible { outline-color: var(--color-k-tomato); }
+}
+
+/* Things utilities can't say cleanly: staggered entrances, the 3D flip card,
+   the book's centre fold. */
+@layer components {
+  .stagger > * { animation-delay: 0ms; }
+  .stagger > :nth-child(n + 2) { animation-delay: 25ms; }
+  .stagger > :nth-child(n + 3) { animation-delay: 50ms; }
+  .stagger > :nth-child(n + 4) { animation-delay: 75ms; }
+  .stagger > :nth-child(n + 5) { animation-delay: 100ms; }
+  .stagger > :nth-child(n + 6) { animation-delay: 125ms; }
+  .stagger > :nth-child(n + 7) { animation-delay: 150ms; }
+  .stagger > :nth-child(n + 8) { animation-delay: 175ms; }
+  .stagger > :nth-child(n + 9) { animation-delay: 200ms; }
+  .stagger > :nth-child(n + 10) { animation-delay: 225ms; }
+  .stagger > :nth-child(n + 12) { animation-delay: 260ms; }
+  .stagger > :nth-child(n + 15) { animation-delay: 300ms; }
+
+  .flip-card { perspective: 600px; }
+  .flip-card .flip-in { transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.4, 1.4, 0.5, 1); }
+  .flip-card[aria-pressed="true"] .flip-in { transform: rotateY(180deg); }
+  .flip-card .flip-face { backface-visibility: hidden; }
+  .flip-card .flip-back { transform: rotateY(180deg); }
+
+  .dots-paper { background-image: radial-gradient(var(--color-k-line) 1.2px, transparent 1.3px); background-size: 9px 9px; }
+
+  .book-fold::after {
+    content: ""; position: absolute; inset-block: 0; left: 50%; width: 40px; transform: translateX(-50%); pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgb(120 85 50 / 0.1) 45%, rgb(120 85 50 / 0.16) 50%, rgb(120 85 50 / 0.1) 55%, transparent);
+  }
+  @media (max-width: 860px) { .book-fold::after { display: none; } }
+
+  .bubble-tail::after {
+    content: ""; position: absolute; left: 34px; bottom: -13px; width: 20px; height: 20px; background: var(--color-k-white);
+    border-right: 2.5px solid var(--color-k-ink); border-bottom: 2.5px solid var(--color-k-ink); transform: rotate(45deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
