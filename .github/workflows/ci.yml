@@ -1,0 +1,55 @@
+# CI — self-hosted runner on the operator's own Mac only (no hosted minutes).
+# PR + manual triggers only (CI-thrift policy): pushes do not run CI.
+# Public repo: fork PRs need maintainer approval before any job runs here
+# (repo setting: fork PR approval = all external contributors).
+name: CI
+
+on:
+  pull_request:
+    branches: [main, test]
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: Web (lint, type-check, build)
+    runs-on: [self-hosted, myai-local]
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+
+  rust:
+    name: Rust (cargo test)
+    runs-on: [self-hosted, myai-local]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .tools
+            ~/.rustup
+            ~/.cargo/registry
+            target
+          key: rust-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'scripts/ci-rust.sh') }}
+      - run: scripts/ci-rust.sh
