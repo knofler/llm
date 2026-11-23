@@ -6,7 +6,9 @@
 # (scripts/zig.sh) as the linker. Locally, use the Docker service instead:
 #   docker compose run --rm rust cargo test
 #
-# Until the Cargo workspace exists (Stage 0 Rust scaffold), this is a no-op.
+# Runs the native tests, then checks the engine compiles for wasm32 (the browser
+# target). wasm-pack itself runs only in Docker locally; wasm32 links with
+# rust-lld, so this step needs no C toolchain.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -27,6 +29,7 @@ if ! command -v rustup >/dev/null 2>&1; then
 fi
 rustup toolchain install "$RUST_TOOLCHAIN" --profile minimal
 rustup default "$RUST_TOOLCHAIN"
+rustup target add wasm32-unknown-unknown
 
 # Zig as cc + linker for the native target (build scripts, tests).
 ZIG="$("$ROOT/scripts/zig.sh")"
@@ -44,3 +47,9 @@ esac
 export CC="$ROOT/.tools/bin/zigcc"
 
 cargo test --workspace
+
+# Ignored tests are the stage targets the operator writes by hand; list them so
+# the CI log shows what is still open.
+cargo test --workspace -- --ignored --list 2>/dev/null | grep ': test$' || true
+
+cargo build -p engine --target wasm32-unknown-unknown --release

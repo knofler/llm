@@ -2,7 +2,7 @@
 # RAM ceiling for the default profile: 2 GB (app 1g + rust 768m).
 #   docker compose up -d                 → web on http://localhost:3320
 #   docker compose run --rm rust cargo test
-#   docker compose run --rm rust wasm-pack build crates/core --target web
+#   docker compose run --rm rust wasm-pack build crates/engine --target web
 name: llm
 
 services:
