@@ -37,6 +37,26 @@ services:
     mem_limit: 768m
     restart: "no"
 
+  # Browser smoke tests for both tracks (compose profile, so not part of the
+  # 2 GB app stack):  docker compose --profile e2e run --rm e2e
+  e2e:
+    container_name: llm-e2e
+    image: mcr.microsoft.com/playwright:v1.55.0-noble
+    profiles: ["e2e"]
+    working_dir: /app/apps/web
+    command: npx playwright test
+    depends_on:
+      - app
+    volumes:
+      - ./:/app
+      - llm-web-node-modules:/app/apps/web/node_modules
+    environment:
+      BASE_URL: http://app:3000
+      CI: ${CI:-}
+    ipc: host
+    mem_limit: 1g
+    restart: "no"
+
 volumes:
   llm-web-node-modules:
   llm-web-next:
