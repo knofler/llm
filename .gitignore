@@ -1,0 +1,27 @@
+# deps / build
+node_modules/
+.next/
+out/
+target/
+pkg/
+.tools/
+*.tsbuildinfo
+next-env.d.ts
+
+# env + secrets
+.env
+.env.*
+!.env.example
+
+# agent notes: never committed in a public repo (AI_RULES §22)
+AI/
+AI_AGENT_HANDOFF.md
+STATE.md
+schedule.json
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# os / editor
+.DS_Store
+*.log
+.vercel
