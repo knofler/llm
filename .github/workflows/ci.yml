@@ -38,6 +38,51 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: "1"
 
+  # Browser smoke tests for both tracks (desktop + phone). Locally this is
+  #   docker compose up -d app && docker compose --profile e2e run --rm e2e
+  # but the self-hosted runner has no docker socket (hard security constraint),
+  # so CI runs the same specs natively: production build, `next start` in the
+  # background, Playwright against it. The runner image bakes Chromium's shared
+  # libraries; only the browser binary is fetched (and cached) per Playwright version.
+  e2e:
+    name: E2E smoke
+    runs-on: [self-hosted, myai-local]
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/web
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      CI: "true"
+      BASE_URL: http://127.0.0.1:3100
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.arch }}-${{ hashFiles('apps/web/package-lock.json') }}
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install chromium
+      - run: npm run build
+      - name: Start the app
+        run: |
+          nohup npm run start -- -H 127.0.0.1 -p 3100 > "$RUNNER_TEMP/next.log" 2>&1 &
+          for _ in $(seq 1 60); do
+            curl -fsS -o /dev/null "$BASE_URL" && exit 0
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/next.log"
+          exit 1
+      - run: npx playwright test
+      - name: Server log on failure
+        if: failure()
+        run: cat "$RUNNER_TEMP/next.log" || true
+
   rust:
     name: Rust
     runs-on: [self-hosted, myai-local]
