@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint && node scripts/guard.mjs",
+    "lint": "eslint && node scripts/guard.mjs && node --test scripts/guard.test.mjs",
     "e2e": "playwright test"
   },
   "dependencies": {
