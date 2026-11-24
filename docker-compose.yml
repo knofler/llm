@@ -2,7 +2,7 @@
 # RAM ceiling for the default profile: 2 GB (app 1g + rust 768m).
 #   docker compose up -d                 → web on http://localhost:3320
 #   docker compose run --rm rust cargo test
-#   docker compose run --rm rust wasm-pack build crates/core --target web
+#   docker compose run --rm rust wasm-pack build crates/engine --target web
 name: llm
 
 services:
@@ -56,6 +56,15 @@ services:
     ipc: host
     mem_limit: 1g
     restart: "no"
+
+# Pinned subnet: Docker's default pick (172.24.0.0/16) swallowed the APIM private
+# IP 172.24.51.22 and broke other local gateways. 10.89.0.0/24 is reserved for llm
+# (10.88.91.0/24 is cairn's).
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.89.0.0/24
 
 volumes:
   llm-web-node-modules:

@@ -1,0 +1,15 @@
+[package]
+name = "engine"
+version = "0.0.0"
+description = "A tiny character-level GPT, written by hand, compiled to WASM for the browser lessons."
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+# cdylib → the .wasm module wasm-pack ships to apps/web; rlib → cargo test.
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "=0.2.100"

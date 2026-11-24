@@ -1,0 +1,14 @@
+# llm — Cargo workspace. The engine is written by hand by the operator, one
+# stage at a time (see README: "The engine is hand-written").
+[workspace]
+resolver = "2"
+members = ["crates/engine"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.91"
+repository = "https://github.com/knofler/llm"
+
+[profile.release]
+opt-level = "s"
+lto = true
