@@ -10,9 +10,10 @@
 //     Tailwind palettes (blue, sky, indigo, …) are not used at all.
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative, sep } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
 
-const root = new URL("..", import.meta.url).pathname;
+// GUARD_ROOT: point the guard at another app folder (scripts/guard.test.mjs uses it).
+const root = process.env.GUARD_ROOT ? resolve(process.env.GUARD_ROOT) : new URL("..", import.meta.url).pathname;
 const src = join(root, "src");
 const ladderFile = join(src, "content", "ladder.ts");
 const ladder = readFileSync(ladderFile, "utf8");
