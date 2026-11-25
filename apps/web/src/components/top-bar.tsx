@@ -11,7 +11,9 @@ export function TopBar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-10 flex flex-wrap items-center justify-between gap-4 border-b py-3.5 backdrop-blur-md",
+        // pt adds the iOS status-bar inset: the installed PWA uses black-translucent + viewport-fit=cover,
+        // so without it the clock/notch covers the header.
+        "sticky top-0 z-10 flex flex-wrap items-center justify-between gap-4 border-b pb-3.5 pt-[calc(14px+env(safe-area-inset-top,0px))] backdrop-blur-md",
         "pl-[max(20px,env(safe-area-inset-left,0px))] pr-[max(20px,env(safe-area-inset-right,0px))]",
         kids ? "border-k-line bg-k-paper/90" : "border-a-rule bg-a-page/90",
       )}
