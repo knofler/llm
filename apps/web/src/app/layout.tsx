@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Andika, Fredoka, JetBrains_Mono, Newsreader, Space_Grotesk } from "next/font/google";
+import { auth0Enabled, getOptionalSession } from "@/auth";
 import { PwaRegister } from "@/components/pwa-register";
 import { TopBar } from "@/components/top-bar";
 import { VERSION_LABEL } from "@/lib/version";
 import { TrackProvider, TrackSurface } from "@/lib/track";
 import "./globals.css";
+
+export const dynamic = "force-dynamic";
 
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"] });
 const newsreader = Newsreader({ variable: "--font-newsreader", subsets: ["latin"], style: ["normal", "italic"] });
@@ -21,13 +24,17 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#0b0b0a", viewportFit: "cover" };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const authEnabled = auth0Enabled();
+  const session = authEnabled ? await getOptionalSession() : null;
+  const userLabel = session?.user?.name ?? session?.user?.email ?? null;
+
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrains.variable} ${fredoka.variable} ${andika.variable}`}>
       <body>
         <TrackProvider>
           <TrackSurface>
-            <TopBar />
+            <TopBar authEnabled={authEnabled} userLabel={userLabel} />
             {children}
           </TrackSurface>
         </TrackProvider>
