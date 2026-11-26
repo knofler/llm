@@ -15,7 +15,7 @@ export function ModelSoFar({ now }: { now: number }) {
               className={cn(
                 "relative grid gap-px rounded-md border px-3 py-[9px]",
                 "md:[&:not(:last-child)]:after:absolute md:[&:not(:last-child)]:after:top-full md:[&:not(:last-child)]:after:left-[22px] md:[&:not(:last-child)]:after:h-3.5 md:[&:not(:last-child)]:after:w-px md:[&:not(:last-child)]:after:bg-a-wire md:[&:not(:last-child)]:after:content-['']",
-                state === "now" && "border-a-acc bg-a-node shadow-[0_0_0_4px] shadow-a-acc/15",
+                state === "now" && "border-a-acc bg-a-node shadow-[0_0_0_4px] shadow-a-acc/25",
                 state === "built" && "border-a-wire bg-a-node",
                 state === "later" && "border-dashed border-a-wire",
               )}

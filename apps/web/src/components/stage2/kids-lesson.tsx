@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { unlock } from "@/lib/wordbook";
 
 const CARD = ["bg-k-mustard", "bg-k-rose", "bg-k-leaf", "bg-k-peach", "bg-k-tomato"];
-const FILL = ["#f0ad2e", "#f3a6a0", "#7fae4e", "#f7c89b", "#e2553f"];
+const FILL = ["#ffb81c", "#ff8f87", "#4fb83a", "#ffb877", "#ec3d1f"];
 const LONGEST = 10;
 const SPIN_MS = 900;
 
@@ -26,13 +26,13 @@ function Spinner({ slices, turn }: { slices: { next: string; share: number }[]; 
       <g style={{ transform: `rotate(${turn}deg)`, transformOrigin: "100px 112px", transition: `transform ${SPIN_MS}ms cubic-bezier(0.2, 0.8, 0.3, 1)` }}>
         <g transform="translate(0 12)">
           {slices.length === 1 ? (
-            <circle cx="100" cy="100" r="90" fill={FILL[0]} stroke="#3a2c24" strokeWidth="3.5" />
+            <circle cx="100" cy="100" r="90" fill={FILL[0]} stroke="#2a1d16" strokeWidth="3.5" />
           ) : (
             slices.map((s, i) => {
               const from = edge * 360;
               edge += s.share;
               const to = edge * 360;
-              return <path key={s.next} d={`M100 100 L${at(from, 90)} A90 90 0 ${to - from > 180 ? 1 : 0} 1 ${at(to, 90)} Z`} fill={FILL[i % FILL.length]} stroke="#3a2c24" strokeWidth="3" strokeLinejoin="round" />;
+              return <path key={s.next} d={`M100 100 L${at(from, 90)} A90 90 0 ${to - from > 180 ? 1 : 0} 1 ${at(to, 90)} Z`} fill={FILL[i % FILL.length]} stroke="#2a1d16" strokeWidth="3" strokeLinejoin="round" />;
             })
           )}
           {(() => {
@@ -42,16 +42,16 @@ function Spinner({ slices, turn }: { slices: { next: string; share: number }[]; 
               e += s.share;
               const [x, y] = at(mid, slices.length === 1 ? 50 : 56).split(" ");
               return (
-                <text key={s.next} x={x} y={y} dy="0.35em" textAnchor="middle" className="font-kid" fontWeight="700" fontSize="26" fill="#3a2c24">
+                <text key={s.next} x={x} y={y} dy="0.35em" textAnchor="middle" className="font-kid" fontWeight="700" fontSize="26" fill="#2a1d16">
                   {s.next.toUpperCase()}
                 </text>
               );
             });
           })()}
-          <circle cx="100" cy="100" r="9" fill="#fffaf1" stroke="#3a2c24" strokeWidth="3" />
+          <circle cx="100" cy="100" r="9" fill="#fffaf1" stroke="#2a1d16" strokeWidth="3" />
         </g>
       </g>
-      <path d="M100 26 L88 4 L112 4 Z" fill="#3a2c24" />
+      <path d="M100 26 L88 4 L112 4 Z" fill="#2a1d16" />
     </svg>
   );
 }
@@ -224,7 +224,7 @@ export function KidsLesson() {
             {solved && (
               <div className="inline-flex -rotate-2 animate-pop items-center gap-3 rounded-[18px] border-[2.5px] border-k-ink bg-k-mustard py-2.5 pr-4 pl-2.5 shadow-[0_4px_0_var(--color-k-ink)]">
                 <svg viewBox="0 0 44 44" aria-hidden="true" className="size-11 flex-none">
-                  <path d="M22 3 l5.6 11.6 12.7 1.7-9.3 8.8 2.3 12.6L22 31.6 10.7 37.7 13 25.1 3.7 16.3l12.7-1.7z" fill="#7fae4e" stroke="#3a2c24" strokeWidth="2.5" strokeLinejoin="round" />
+                  <path d="M22 3 l5.6 11.6 12.7 1.7-9.3 8.8 2.3 12.6L22 31.6 10.7 37.7 13 25.1 3.7 16.3l12.7-1.7z" fill="#4fb83a" stroke="#2a1d16" strokeWidth="2.5" strokeLinejoin="round" />
                 </svg>
                 <div className="font-kid text-base font-semibold leading-tight">
                   <b className="block text-xl">You made a what-comes-next tally!</b>

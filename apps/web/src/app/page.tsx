@@ -36,7 +36,7 @@ function AdultHome() {
           return (
             <li key={s.n}>
               {live ? (
-                <Link href={`/learn/${s.n}`} className="grid h-full gap-2 rounded-[10px] border border-a-acc bg-a-panel p-4 shadow-[0_0_0_4px] shadow-a-acc/15 transition-colors hover:bg-a-node">
+                <Link href={`/learn/${s.n}`} className="grid h-full gap-2 rounded-[10px] border border-a-acc bg-a-panel p-4 shadow-[0_0_0_4px] shadow-a-acc/25 transition-colors hover:bg-a-node">
                   {inner}
                 </Link>
               ) : (

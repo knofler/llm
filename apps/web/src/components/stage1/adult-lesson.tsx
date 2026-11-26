@@ -51,7 +51,7 @@ export function AdultLesson() {
               aria-current={i === NOW ? "step" : undefined}
               className={cn(
                 "flex items-center gap-2 whitespace-nowrap border-r border-a-rule px-4 py-[9px] font-display text-[12.5px] font-medium leading-none last:border-r-0",
-                i < NOW ? "text-a-stand" : i === NOW ? "bg-a-acc/15 text-a-acc" : "text-a-cap",
+                i < NOW ? "text-a-stand" : i === NOW ? "bg-a-acc/20 text-a-acc" : "text-a-cap",
               )}
             >
               <em className="font-mono text-[10px] not-italic opacity-70">{i < NOW ? `✓ ${i + 1}` : i + 1}</em>
@@ -78,7 +78,7 @@ export function AdultLesson() {
               onChange={(e) => setText(e.target.value)}
               autoComplete="off"
               spellCheck={false}
-              className="min-w-0 flex-1 rounded-md border border-a-wire bg-a-node px-3 py-2.5 font-mono text-lg font-medium leading-none tracking-[0.02em] focus:border-a-acc focus:shadow-[0_0_0_4px] focus:shadow-a-acc/15 focus:outline-none"
+              className="min-w-0 flex-1 rounded-md border border-a-wire bg-a-node px-3 py-2.5 font-mono text-lg font-medium leading-none tracking-[0.02em] focus:border-a-acc focus:shadow-[0_0_0_4px] focus:shadow-a-acc/25 focus:outline-none"
             />
           </div>
           <div className="overflow-x-auto px-4 pt-[18px] pb-5">
@@ -149,7 +149,7 @@ export function AdultLesson() {
           </div>
         </div>
 
-        <div className={cn("flex flex-wrap items-center justify-between gap-[18px] rounded-[10px] border p-[18px]", named ? "border-a-acc bg-a-acc/15" : "border-dashed border-a-wire")}>
+        <div className={cn("flex flex-wrap items-center justify-between gap-[18px] rounded-[10px] border p-[18px]", named ? "border-a-acc bg-a-acc/20" : "border-dashed border-a-wire")}>
           <div className="grid gap-1.5">
             <small className="font-mono text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-a-cap">
               Word book · {named ? "1 word earned" : "1 word waiting"}

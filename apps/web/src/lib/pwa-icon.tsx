@@ -3,8 +3,8 @@ import { ImageResponse } from "next/og";
 // llm icon: three boxes joined by a wire, the model drawn as a box diagram.
 // ImageResponse needs inline styles; this file is the only place they are allowed.
 export const ICON_BG = "#0b0b0a";
-const BOX = "#f0a868";
-const WIRE = "#a9754a";
+const BOX = "#ff7a1f";
+const WIRE = "#b3541a";
 
 export type IconKind = "any" | "maskable" | "touch" | "favicon";
 
