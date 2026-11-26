@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BrainButton } from "@/components/brain/brain-panel";
 import { cn } from "@/lib/utils";
 import { useTrack, type Track } from "@/lib/track";
 import { signInWithAuth0, signOutAccount } from "@/app/auth-actions";
@@ -13,6 +15,14 @@ export interface TopBarProps {
 export function TopBar({ authEnabled = false, userLabel = null }: TopBarProps) {
   const { track, setTrack } = useTrack();
   const kids = track === "kids";
+  const [serverBrain, setServerBrain] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/brain")
+      .then((r) => (r.ok ? r.json() : { brain: false }))
+      .then((j: { brain?: boolean }) => setServerBrain(Boolean(j.brain)))
+      .catch(() => undefined);
+  }, []);
 
   return (
     <header
@@ -39,6 +49,7 @@ export function TopBar({ authEnabled = false, userLabel = null }: TopBarProps) {
         <Link href="/words" className={cn("text-sm underline-offset-4 hover:underline", kids ? "font-kid font-semibold text-k-soft" : "font-mono text-a-cap")}>
           {kids ? "My words" : "Word book"}
         </Link>
+        <BrainButton serverBrain={serverBrain} />
         {authEnabled &&
           (userLabel ? (
             <form action={signOutAccount} className="flex items-center gap-2">
