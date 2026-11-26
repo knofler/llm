@@ -6,6 +6,9 @@ export default defineConfig({
   testDir: "./e2e",
   timeout: 30_000,
   retries: process.env.CI ? 1 : 0,
+  // Default is half the CPU cores (9 on an 18-core Mac). That many Chromiums
+  // inside the 1 GB e2e container crash with "Page crashed"; 2 is stable.
+  workers: 2,
   reporter: [["list"]],
   use: {
     baseURL: process.env.BASE_URL ?? "http://localhost:3000",

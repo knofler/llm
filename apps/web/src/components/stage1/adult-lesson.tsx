@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { STAGES } from "@/content/ladder";
+import { ModelSoFar } from "@/components/model-so-far";
 import { bookOf, decode, encode, show } from "@/lib/book";
 import { cn } from "@/lib/utils";
 import { has, unlock } from "@/lib/wordbook";
@@ -31,27 +31,7 @@ export function AdultLesson() {
 
   return (
     <main className="grid min-h-[calc(100dvh-60px)] grid-cols-1 md:grid-cols-[250px_minmax(0,1fr)]">
-      <aside aria-label="Your model so far" className="grid content-start gap-3.5 border-b border-a-rule bg-a-alt px-[22px] py-7 md:border-r md:border-b-0">
-        <h2 className="font-mono text-[11px] font-medium uppercase leading-none tracking-[0.1em] text-a-cap">Your model so far</h2>
-        <ol className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-2 md:grid-cols-1 md:gap-3.5">
-          {STAGES.map((s) => (
-            <li
-              key={s.n}
-              className={cn(
-                "relative grid gap-px rounded-md border px-3 py-[9px]",
-                "md:[&:not(:last-child)]:after:absolute md:[&:not(:last-child)]:after:top-full md:[&:not(:last-child)]:after:left-[22px] md:[&:not(:last-child)]:after:h-3.5 md:[&:not(:last-child)]:after:w-px md:[&:not(:last-child)]:after:bg-a-wire md:[&:not(:last-child)]:after:content-['']",
-                s.n === 1 ? "border-a-acc bg-a-node shadow-[0_0_0_4px] shadow-a-acc/15" : "border-dashed border-a-wire",
-              )}
-            >
-              <b className={cn("font-display text-[13.5px] leading-tight", s.n === 1 ? "font-medium" : "font-normal text-a-cap")}>{s.plain}</b>
-              <i className={cn("font-mono text-[11px] not-italic leading-snug", s.n === 1 ? "text-a-acc" : "text-a-cap")}>{s.n === 1 ? "building now" : `stage ${s.n}`}</i>
-            </li>
-          ))}
-        </ol>
-        <p className="mt-1.5 text-sm leading-normal text-a-cap">
-          Each stage adds one box. By stage 6 this diagram is a complete language model, and you&apos;ll have built every box in it.
-        </p>
-      </aside>
+      <ModelSoFar now={1} />
 
       <section className="grid max-w-[1040px] content-start gap-[30px] px-[clamp(20px,4vw,56px)] pt-9 pb-16">
         <div>

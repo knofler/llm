@@ -8,7 +8,7 @@ import { unlock } from "@/lib/wordbook";
 const CARD = ["bg-k-mustard", "bg-k-rose", "bg-k-leaf", "bg-k-peach", "bg-k-tomato"];
 const SECRET = "hi pip";
 
-function Pip() {
+export function Pip() {
   return (
     <svg viewBox="0 0 320 250" role="img" aria-label="Pip the robot holding a little notebook" className="h-auto w-[min(100%,330px)] overflow-visible">
       <ellipse cx="160" cy="236" rx="96" ry="10" fill="#ead9bd" />
