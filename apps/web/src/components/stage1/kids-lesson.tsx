@@ -8,37 +8,37 @@ import { unlock } from "@/lib/wordbook";
 const CARD = ["bg-k-mustard", "bg-k-rose", "bg-k-leaf", "bg-k-peach", "bg-k-tomato"];
 const SECRET = "hi pip";
 
-function Pip() {
+export function Pip() {
   return (
     <svg viewBox="0 0 320 250" role="img" aria-label="Pip the robot holding a little notebook" className="h-auto w-[min(100%,330px)] overflow-visible">
       <ellipse cx="160" cy="236" rx="96" ry="10" fill="#ead9bd" />
       <g className="origin-bottom animate-bob">
-        <line x1="160" y1="38" x2="160" y2="14" stroke="#3a2c24" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="160" cy="11" r="8" fill="#e2553f" stroke="#3a2c24" strokeWidth="3.5" />
-        <rect x="104" y="36" width="112" height="82" rx="26" fill="#f0ad2e" stroke="#3a2c24" strokeWidth="4" />
-        <rect x="120" y="54" width="80" height="44" rx="16" fill="#fffaf1" stroke="#3a2c24" strokeWidth="3.5" />
-        <circle cx="143" cy="76" r="7" fill="#3a2c24" />
-        <circle cx="177" cy="76" r="7" fill="#3a2c24" />
+        <line x1="160" y1="38" x2="160" y2="14" stroke="#2a1d16" strokeWidth="4" strokeLinecap="round" />
+        <circle cx="160" cy="11" r="8" fill="#ec3d1f" stroke="#2a1d16" strokeWidth="3.5" />
+        <rect x="104" y="36" width="112" height="82" rx="26" fill="#ffb81c" stroke="#2a1d16" strokeWidth="4" />
+        <rect x="120" y="54" width="80" height="44" rx="16" fill="#fffaf1" stroke="#2a1d16" strokeWidth="3.5" />
+        <circle cx="143" cy="76" r="7" fill="#2a1d16" />
+        <circle cx="177" cy="76" r="7" fill="#2a1d16" />
         <circle cx="145.5" cy="73.5" r="2.2" fill="#fffaf1" />
         <circle cx="179.5" cy="73.5" r="2.2" fill="#fffaf1" />
-        <path d="M151 89 q9 7 18 0" fill="none" stroke="#3a2c24" strokeWidth="3.5" strokeLinecap="round" />
-        <circle cx="128" cy="88" r="5" fill="#f3a6a0" />
-        <circle cx="192" cy="88" r="5" fill="#f3a6a0" />
-        <rect x="148" y="116" width="24" height="10" fill="#3a2c24" />
-        <rect x="96" y="124" width="128" height="92" rx="28" fill="#7fae4e" stroke="#3a2c24" strokeWidth="4" />
-        <circle cx="124" cy="146" r="6" fill="#e2553f" stroke="#3a2c24" strokeWidth="3" />
-        <path d="M98 150 q-30 10 -24 46" fill="none" stroke="#3a2c24" strokeWidth="10" strokeLinecap="round" />
-        <path d="M222 150 q34 2 34 30" fill="none" stroke="#3a2c24" strokeWidth="10" strokeLinecap="round" />
+        <path d="M151 89 q9 7 18 0" fill="none" stroke="#2a1d16" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx="128" cy="88" r="5" fill="#ff8f87" />
+        <circle cx="192" cy="88" r="5" fill="#ff8f87" />
+        <rect x="148" y="116" width="24" height="10" fill="#2a1d16" />
+        <rect x="96" y="124" width="128" height="92" rx="28" fill="#4fb83a" stroke="#2a1d16" strokeWidth="4" />
+        <circle cx="124" cy="146" r="6" fill="#ec3d1f" stroke="#2a1d16" strokeWidth="3" />
+        <path d="M98 150 q-30 10 -24 46" fill="none" stroke="#2a1d16" strokeWidth="10" strokeLinecap="round" />
+        <path d="M222 150 q34 2 34 30" fill="none" stroke="#2a1d16" strokeWidth="10" strokeLinecap="round" />
         <g transform="translate(222 158) rotate(10)" className="font-kid" fontWeight="700" fontSize="13">
-          <rect x="0" y="0" width="64" height="50" rx="6" fill="#fffaf1" stroke="#3a2c24" strokeWidth="3.5" />
-          <line x1="32" y1="2" x2="32" y2="48" stroke="#3a2c24" strokeWidth="2.5" />
-          <text x="9" y="22" fill="#3a2c24">a</text>
-          <text x="40" y="22" fill="#e2553f">1</text>
-          <text x="9" y="40" fill="#3a2c24">b</text>
-          <text x="40" y="40" fill="#e2553f">2</text>
+          <rect x="0" y="0" width="64" height="50" rx="6" fill="#fffaf1" stroke="#2a1d16" strokeWidth="3.5" />
+          <line x1="32" y1="2" x2="32" y2="48" stroke="#2a1d16" strokeWidth="2.5" />
+          <text x="9" y="22" fill="#2a1d16">a</text>
+          <text x="40" y="22" fill="#ec3d1f">1</text>
+          <text x="9" y="40" fill="#2a1d16">b</text>
+          <text x="40" y="40" fill="#ec3d1f">2</text>
         </g>
-        <rect x="112" y="212" width="30" height="20" rx="8" fill="#3a2c24" />
-        <rect x="178" y="212" width="30" height="20" rx="8" fill="#3a2c24" />
+        <rect x="112" y="212" width="30" height="20" rx="8" fill="#2a1d16" />
+        <rect x="178" y="212" width="30" height="20" rx="8" fill="#2a1d16" />
       </g>
     </svg>
   );
@@ -161,7 +161,7 @@ export function KidsLesson() {
             {solved && (
               <div className="inline-flex -rotate-2 animate-pop items-center gap-3 rounded-[18px] border-[2.5px] border-k-ink bg-k-mustard py-2.5 pr-4 pl-2.5 shadow-[0_4px_0_var(--color-k-ink)]">
                 <svg viewBox="0 0 44 44" aria-hidden="true" className="size-11 flex-none">
-                  <path d="M22 3 l5.6 11.6 12.7 1.7-9.3 8.8 2.3 12.6L22 31.6 10.7 37.7 13 25.1 3.7 16.3l12.7-1.7z" fill="#e2553f" stroke="#3a2c24" strokeWidth="2.5" strokeLinejoin="round" />
+                  <path d="M22 3 l5.6 11.6 12.7 1.7-9.3 8.8 2.3 12.6L22 31.6 10.7 37.7 13 25.1 3.7 16.3l12.7-1.7z" fill="#ec3d1f" stroke="#2a1d16" strokeWidth="2.5" strokeLinejoin="round" />
                 </svg>
                 <div className="font-kid text-base font-semibold leading-tight">
                   <b className="block text-xl">You made a code book!</b>

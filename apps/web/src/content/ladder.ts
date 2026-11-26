@@ -27,6 +27,9 @@ export const EXPLAIN: Record<string, string> = {
   tokenizer: "The book that turns text into numbers and back again, without losing anything.",
   token: "One numbered piece of text. In your book, one character.",
   vocabulary: "Every entry in the book: all the pieces the model knows.",
+  bigram: "A pair of neighbours: one token and the token right after it. Your tally counted them.",
+  probability: "How likely something is, as a share from 0 to 1. One row of the tally, turned into shares.",
+  sampling: "Picking the next token by rolling a lopsided die whose sides follow those shares.",
 };
 
-export const LIVE_STAGES = [1];
+export const LIVE_STAGES = [1, 2];
