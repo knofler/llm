@@ -20,6 +20,10 @@ services:
     environment:
       NEXT_TELEMETRY_DISABLED: "1"
       WATCHPACK_POLLING: "true"
+      AUTH_SECRET: ${AUTH_SECRET:-}
+      AUTH_AUTH0_ID: ${AUTH_AUTH0_ID:-}
+      AUTH_AUTH0_SECRET: ${AUTH_AUTH0_SECRET:-}
+      AUTH_AUTH0_ISSUER: ${AUTH_AUTH0_ISSUER:-}
     mem_limit: 1g
     restart: "no"
 

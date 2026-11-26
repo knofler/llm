@@ -3,8 +3,14 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useTrack, type Track } from "@/lib/track";
+import { signInWithAuth0, signOutAccount } from "@/app/auth-actions";
 
-export function TopBar() {
+export interface TopBarProps {
+  authEnabled?: boolean;
+  userLabel?: string | null;
+}
+
+export function TopBar({ authEnabled = false, userLabel = null }: TopBarProps) {
   const { track, setTrack } = useTrack();
   const kids = track === "kids";
 
@@ -33,6 +39,39 @@ export function TopBar() {
         <Link href="/words" className={cn("text-sm underline-offset-4 hover:underline", kids ? "font-kid font-semibold text-k-soft" : "font-mono text-a-cap")}>
           {kids ? "My words" : "Word book"}
         </Link>
+        {authEnabled &&
+          (userLabel ? (
+            <form action={signOutAccount} className="flex items-center gap-2">
+              <span className={cn("hidden max-w-[140px] truncate text-xs sm:inline", kids ? "font-kidbody text-k-soft" : "font-mono text-a-cap")}>
+                {userLabel}
+              </span>
+              <button
+                type="submit"
+                className={cn(
+                  "cursor-pointer border px-3 py-1.5 text-xs leading-none transition-colors",
+                  kids
+                    ? "rounded-full border-k-ink bg-k-paper font-kid font-semibold text-k-ink hover:bg-k-page"
+                    : "rounded-md border-a-rule bg-a-panel font-mono text-a-cap hover:text-a-ink",
+                )}
+              >
+                Sign out
+              </button>
+            </form>
+          ) : (
+            <form action={signInWithAuth0}>
+              <button
+                type="submit"
+                className={cn(
+                  "cursor-pointer border px-3 py-1.5 text-xs leading-none transition-colors",
+                  kids
+                    ? "rounded-full border-k-ink bg-k-paper font-kid font-semibold text-k-ink hover:bg-k-page"
+                    : "rounded-md border-a-rule bg-a-panel font-mono text-a-cap hover:text-a-ink",
+                )}
+              >
+                Sign in
+              </button>
+            </form>
+          ))}
         <div
           role="group"
           aria-label="Choose a track"
