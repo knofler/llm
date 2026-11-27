@@ -42,15 +42,16 @@ export function TopBar({ authEnabled = false, userLabel = null }: TopBarProps) {
 
   return (
     <>
-    <div aria-hidden="true" style={tall === null ? undefined : { height: tall }} className="h-[calc(59px+env(safe-area-inset-top,0px))]" />
+    <div aria-hidden="true" style={tall === null ? undefined : { height: tall }} className="h-[calc(59px+var(--inset-top,env(safe-area-inset-top,0px)))]" />
     <header
       ref={bar}
       data-testid="top-bar"
       className={cn(
-        // pt adds the iOS status-bar inset: the installed PWA uses black-translucent + viewport-fit=cover,
-        // so without it the clock/notch covers the header. The background is solid: a see-through one
-        // needs color-mix, which older iOS drops, leaving the bar transparent over the lesson.
-        "fixed inset-x-0 top-0 z-50 flex flex-wrap items-center justify-between gap-4 border-b pb-3.5 pt-[calc(14px+env(safe-area-inset-top,0px))]",
+        // The installed PWA uses statusBarStyle "default", so iOS keeps the page below the clock and the
+        // top inset is 0. The inset padding stays as a fallback for any mode that draws under the status
+        // bar. --inset-top lets the e2e test simulate a 59px inset (env() can't be faked in a browser).
+        // The background is solid: a see-through one needs color-mix, which older iOS drops.
+        "fixed inset-x-0 top-0 z-50 flex flex-wrap items-center justify-between gap-4 border-b pb-3.5 pt-[calc(14px+var(--inset-top,env(safe-area-inset-top,0px)))]",
         "pl-[max(20px,env(safe-area-inset-left,0px))] pr-[max(20px,env(safe-area-inset-right,0px))]",
         kids ? "border-k-line bg-k-paper" : "border-a-rule bg-a-page",
       )}
