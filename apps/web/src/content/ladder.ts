@@ -30,6 +30,24 @@ export const EXPLAIN: Record<string, string> = {
   bigram: "A pair of neighbours: one token and the token right after it. Your tally counted them.",
   probability: "How likely something is, as a share from 0 to 1. One row of the tally, turned into shares.",
   sampling: "Picking the next token by rolling a lopsided die whose sides follow those shares.",
+  loss: "The wrongness score: on average, how little share the model gave the token that really came next.",
+  gradient: "The push on every dial: which way, and how hard, turning it would change the wrongness score.",
+  "gradient descent": "Nudging every dial a small step against its push, over and over, so the score keeps falling.",
+  backprop: "Working out every dial's push by tracing the score backwards through the model, box by box.",
+  embedding: "A token's spot: a short list of numbers the model learns, so tokens that act alike sit close together.",
+  MLP: "Numbers in, a layer of dials, a squash, more dials, numbers out. The small thinking box between the spots and the guess.",
+  batch: "The random handful of examples one nudge looks at, instead of the whole text every time.",
+  attention: "Each token scores the tokens before it, question against label, turns the scores into shares, and blends their messages by those shares.",
+  head: "One set of question, label and message dials: one way of choosing whom to listen to. Real models run several side by side.",
+  transformer: "A listening layer, then a small thinking layer, each with its input added back onto its output. Stack these blocks and you have the whole model.",
+  GPT: "A stack of transformer blocks that only looks back and is trained to guess the next token. Generative pre-trained transformer.",
+  training: "Running the nudge over handful after handful of text, again and again, until the wrongness score stops falling.",
+  parameters: "Every number the nudge can turn: spots, dials, listening and thinking. Yours has a few thousand; big models have billions.",
+  temperature: "The boldness dial: every score is divided by it before the shares. Low plays safe and repeats; high takes chances.",
+  weights: "The numbers training found: every spot and dial, frozen. Save them and you have saved the model.",
+  safetensors: "A file that starts with a short plain-text note saying where each table of numbers sits, then the raw numbers back to back. Safe to open, because it holds only numbers, never code.",
+  GGUF: "A single file holding the model's numbers, its token book and its settings, usually squashed to 8 or 4 bits each, so a laptop can run it.",
+  inference: "Running the frozen weights forward to guess the next token, again and again. No nudging, no learning: just using the model.",
 };
 
-export const LIVE_STAGES = [1, 2];
+export const LIVE_STAGES = [1, 2, 3, 4, 5, 6, 7];
