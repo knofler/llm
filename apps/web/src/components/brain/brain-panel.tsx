@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, useState, useSyncExternalStore } from "react";
-import { Brain as BrainIcon, Check, Trash2 } from "lucide-react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
+import { Brain as BrainIcon, Check, Trash2, X } from "lucide-react";
 import { BRAIN_PRESETS, type Brain } from "@/lib/brain/types";
 import { useTrack } from "@/lib/track";
 import { cn } from "@/lib/utils";
@@ -225,19 +226,87 @@ export function BrainNudge({ onAdd, children }: { onAdd: () => void; children?: 
   );
 }
 
-export function BrainButton({ serverBrain = false, className }: { serverBrain?: boolean; className?: string }) {
+/**
+ * The panel container (the add-brain kit's sheet, 2026-11-27). Portal on
+ * document.body, so the sticky top bar can never clip it or push it off screen.
+ * Phone (< sm): bottom sheet, full width, opaque, scrim, scrolls inside itself,
+ * safe-area padding. sm and up: a centred dialog clamped to the viewport.
+ * Escape, the scrim and the X close it; page scroll is locked while open and
+ * restored on close.
+ */
+export function BrainSheet({ brain, onClose }: { brain: Brain | null; onClose: () => void }) {
+  const { track } = useTrack();
+  const kids = track === "kids";
+  const titleId = useId();
+  const panel = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    panel.current?.focus();
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+  return createPortal(
+    <div data-testid="brain-sheet-root" className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4">
+      <button type="button" aria-label="Close" data-testid="brain-scrim" onClick={onClose} className="absolute inset-0 bg-black/60" />
+      <div
+        ref={panel}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+        data-testid="brain-sheet"
+        className={cn(
+          "relative flex max-h-[85dvh] w-full flex-col overflow-y-auto overscroll-contain rounded-t-2xl border p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl focus:outline-none sm:max-h-[calc(100dvh-2rem)] sm:w-[min(32rem,calc(100vw-2rem))] sm:rounded-2xl",
+          kids ? "border-2 border-k-ink bg-k-white text-k-ink" : "border-a-rule bg-a-page text-a-ink",
+        )}
+      >
+        <div className="mb-1 flex items-start justify-between gap-3">
+          <p id={titleId} className="text-base font-bold">
+            Give it a brain
+          </p>
+          <button
+            type="button"
+            aria-label="Close"
+            data-testid="brain-close"
+            onClick={onClose}
+            className={cn("-m-1 cursor-pointer rounded-full p-2", kids ? "text-k-soft hover:text-k-ink" : "text-a-stand hover:text-a-ink")}
+          >
+            <X aria-hidden className="size-5" />
+          </button>
+        </div>
+        <p className={cn("mb-3 text-xs", kids ? "text-k-soft" : "text-a-stand")}>
+          Bring a key from Claude, OpenAI, OpenRouter, Groq, DeepSeek or any OpenAI-compatible service. It stays in this browser.
+        </p>
+        <BrainPanel brain={brain} onDone={onClose} />
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+export function BrainButton({ serverBrain = false, className, onOpen }: { serverBrain?: boolean; className?: string; onOpen?: () => void }) {
   const { track } = useTrack();
   const kids = track === "kids";
   const brain = useBrain();
   const [open, setOpen] = useState(false);
   const on = !!brain || serverBrain;
+  const close = useRef(() => setOpen(false)).current;
   return (
-    <div className={cn("relative", className)}>
+    <div className={className}>
       <button
         type="button"
         data-testid="brain-button"
+        aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          setOpen(true);
+          onOpen?.();
+        }}
         className={cn(
           "flex cursor-pointer items-center gap-1.5 border px-3 py-1.5 text-xs font-semibold leading-none transition-colors",
           kids ? "rounded-full font-kid" : "rounded-md font-mono",
@@ -253,21 +322,7 @@ export function BrainButton({ serverBrain = false, className }: { serverBrain?: 
         <BrainIcon aria-hidden className="size-3.5" />
         {brain ? <span className="max-w-[9rem] truncate">Brain: {brain.model}</span> : serverBrain ? "Brain on" : "Give it a brain"}
       </button>
-      {open && (
-        <div
-          className={cn(
-            "absolute right-0 top-full z-40 mt-2 max-h-[calc(100dvh-8rem)] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border p-4 shadow-2xl",
-            kids ? "border-2 border-k-ink bg-k-white text-k-ink" : "border-a-rule bg-a-page text-a-ink",
-          )}
-          onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
-        >
-          <p className="mb-1 text-base font-bold">Give it a brain</p>
-          <p className={cn("mb-3 text-xs", kids ? "text-k-soft" : "text-a-stand")}>
-            Bring a key from Claude, OpenAI, OpenRouter, Groq, DeepSeek or any OpenAI-compatible service. It stays in this browser.
-          </p>
-          <BrainPanel brain={brain} onDone={() => setOpen(false)} />
-        </div>
-      )}
+      {open && <BrainSheet brain={brain} onClose={close} />}
     </div>
   );
 }
