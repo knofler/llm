@@ -44,6 +44,10 @@ export const EXPLAIN: Record<string, string> = {
   training: "Running the nudge over handful after handful of text, again and again, until the wrongness score stops falling.",
   parameters: "Every number the nudge can turn: spots, dials, listening and thinking. Yours has a few thousand; big models have billions.",
   temperature: "The boldness dial: every score is divided by it before the shares. Low plays safe and repeats; high takes chances.",
+  weights: "The numbers training found: every spot and dial, frozen. Save them and you have saved the model.",
+  safetensors: "A file that starts with a short plain-text note saying where each table of numbers sits, then the raw numbers back to back. Safe to open, because it holds only numbers, never code.",
+  GGUF: "A single file holding the model's numbers, its token book and its settings, usually squashed to 8 or 4 bits each, so a laptop can run it.",
+  inference: "Running the frozen weights forward to guess the next token, again and again. No nudging, no learning: just using the model.",
 };
 
-export const LIVE_STAGES = [1, 2, 3, 4, 5, 6];
+export const LIVE_STAGES = [1, 2, 3, 4, 5, 6, 7];
