@@ -30,6 +30,10 @@ export const EXPLAIN: Record<string, string> = {
   bigram: "A pair of neighbours: one token and the token right after it. Your tally counted them.",
   probability: "How likely something is, as a share from 0 to 1. One row of the tally, turned into shares.",
   sampling: "Picking the next token by rolling a lopsided die whose sides follow those shares.",
+  loss: "The wrongness score: on average, how little share the model gave the token that really came next.",
+  gradient: "The push on every dial: which way, and how hard, turning it would change the wrongness score.",
+  "gradient descent": "Nudging every dial a small step against its push, over and over, so the score keeps falling.",
+  backprop: "Working out every dial's push by tracing the score backwards through the model, box by box.",
 };
 
-export const LIVE_STAGES = [1, 2];
+export const LIVE_STAGES = [1, 2, 3];
