@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { BrainButton } from "@/components/brain/brain-panel";
 import { cn } from "@/lib/utils";
@@ -24,14 +24,35 @@ export function TopBar({ authEnabled = false, userLabel = null }: TopBarProps) {
       .catch(() => undefined);
   }, []);
 
+  // The bar is pinned with position: fixed, not sticky. Sticky stopped
+  // holding in the installed iPhone PWA, so the bar scrolled away. A spacer
+  // the same height as the bar keeps the page from sliding under it; the
+  // height is measured because the bar wraps to two rows on narrow phones.
+  const bar = useRef<HTMLElement>(null);
+  const [tall, setTall] = useState<number | null>(null);
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    const fit = () => setTall(el.offsetHeight);
+    fit();
+    const watch = new ResizeObserver(fit);
+    watch.observe(el);
+    return () => watch.disconnect();
+  }, []);
+
   return (
+    <>
+    <div aria-hidden="true" style={tall === null ? undefined : { height: tall }} className="h-[calc(59px+env(safe-area-inset-top,0px))]" />
     <header
+      ref={bar}
+      data-testid="top-bar"
       className={cn(
         // pt adds the iOS status-bar inset: the installed PWA uses black-translucent + viewport-fit=cover,
-        // so without it the clock/notch covers the header.
-        "sticky top-0 z-10 flex flex-wrap items-center justify-between gap-4 border-b pb-3.5 pt-[calc(14px+env(safe-area-inset-top,0px))] backdrop-blur-md",
+        // so without it the clock/notch covers the header. The background is solid: a see-through one
+        // needs color-mix, which older iOS drops, leaving the bar transparent over the lesson.
+        "fixed inset-x-0 top-0 z-50 flex flex-wrap items-center justify-between gap-4 border-b pb-3.5 pt-[calc(14px+env(safe-area-inset-top,0px))]",
         "pl-[max(20px,env(safe-area-inset-left,0px))] pr-[max(20px,env(safe-area-inset-right,0px))]",
-        kids ? "border-k-line bg-k-paper/90" : "border-a-rule bg-a-page/90",
+        kids ? "border-k-line bg-k-paper" : "border-a-rule bg-a-page",
       )}
     >
       <Link href="/" className={cn("flex items-center gap-2.5 leading-none", kids ? "font-kid text-lg font-semibold" : "font-display text-[15px] font-semibold tracking-tight")}>
@@ -105,5 +126,6 @@ export function TopBar({ authEnabled = false, userLabel = null }: TopBarProps) {
         </div>
       </nav>
     </header>
+    </>
   );
 }
