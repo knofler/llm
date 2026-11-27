@@ -40,6 +40,10 @@ export const EXPLAIN: Record<string, string> = {
   attention: "Each token scores the tokens before it, question against label, turns the scores into shares, and blends their messages by those shares.",
   head: "One set of question, label and message dials: one way of choosing whom to listen to. Real models run several side by side.",
   transformer: "A listening layer, then a small thinking layer, each with its input added back onto its output. Stack these blocks and you have the whole model.",
+  GPT: "A stack of transformer blocks that only looks back and is trained to guess the next token. Generative pre-trained transformer.",
+  training: "Running the nudge over handful after handful of text, again and again, until the wrongness score stops falling.",
+  parameters: "Every number the nudge can turn: spots, dials, listening and thinking. Yours has a few thousand; big models have billions.",
+  temperature: "The boldness dial: every score is divided by it before the shares. Low plays safe and repeats; high takes chances.",
 };
 
-export const LIVE_STAGES = [1, 2, 3, 4, 5];
+export const LIVE_STAGES = [1, 2, 3, 4, 5, 6];
