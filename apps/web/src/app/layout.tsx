@@ -15,10 +15,52 @@ const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["lati
 const fredoka = Fredoka({ variable: "--font-fredoka", subsets: ["latin"] });
 const andika = Andika({ variable: "--font-andika", subsets: ["latin"], weight: ["400", "700"] });
 
+const SITE_URL = "https://llm.bluegreyboxes.com";
+const SITE_TITLE = "llm · build a language model by hand";
+const SITE_DESCRIPTION =
+  "Build the smallest working language model, one piece at a time. Plain words first, real names once you've earned them.";
+
+const softwareJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "llm",
+  url: SITE_URL,
+  applicationCategory: "EducationalApplication",
+  operatingSystem: "Web",
+  description: SITE_DESCRIPTION,
+  image: `${SITE_URL}/opengraph-image`,
+  publisher: {
+    "@type": "Organization",
+    name: "Blue Grey Boxes",
+    url: "https://bluegreyboxes.com",
+  },
+};
+
 export const metadata: Metadata = {
-  title: "llm · build a language model by hand",
-  description: "Build the smallest working language model, one piece at a time. Plain words first, real names once you've earned them.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: "%s · llm",
+  },
+  description: SITE_DESCRIPTION,
   applicationName: "llm",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_AU",
+    url: "/",
+    siteName: "llm",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: SITE_TITLE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/opengraph-image"],
+  },
+  robots: { index: true, follow: true },
   appleWebApp: { capable: true, title: "llm", statusBarStyle: "black-translucent" },
 };
 
@@ -31,6 +73,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrains.variable} ${fredoka.variable} ${andika.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd).replace(/</g, "\\u003c") }}
+        />
+      </head>
       <body>
         <TrackProvider>
           <TrackSurface>
