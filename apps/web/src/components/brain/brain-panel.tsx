@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Brain as BrainIcon, Check, Trash2, X } from "lucide-react";
 import { BRAIN_PRESETS, type Brain } from "@/lib/brain/types";
@@ -295,7 +295,7 @@ export function BrainButton({ serverBrain = false, className, onOpen }: { server
   const brain = useBrain();
   const [open, setOpen] = useState(false);
   const on = !!brain || serverBrain;
-  const close = useRef(() => setOpen(false)).current;
+  const close = useCallback(() => setOpen(false), []);
   return (
     <div className={className}>
       <button
