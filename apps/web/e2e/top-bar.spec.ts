@@ -1,8 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
+// Set the track before any page script runs. Opening "/" first races the dev
+// server: its first on-demand compile makes the dev client reload "/", which
+// interrupts the next navigation (seen on WebKit).
 async function fresh(page: Page, track: "adults" | "kids") {
-  await page.goto("/");
-  await page.evaluate((t) => localStorage.setItem("llm-track", t), track);
+  await page.addInitScript((t) => localStorage.setItem("llm-track", t), track);
 }
 
 /** The bar's top edge sits at the top of the screen and it is fully on screen. */
@@ -29,7 +31,8 @@ for (const track of ["adults", "kids"] as const) {
     await pinned(page);
 
     await page.getByTestId("top-bar").getByRole("link", { name: track === "kids" ? "My words" : "Word book" }).click();
-    await expect(page).toHaveURL(/\/words$/);
+    // The dev server compiles /words on first visit before the URL changes.
+    await expect(page).toHaveURL(/\/words$/, { timeout: 20_000 });
     await pinned(page);
   });
 }

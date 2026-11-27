@@ -29,7 +29,8 @@ test("adults: train, pack at 32/8/4 bits, open the file and run it, names unlock
   await expect(page.getByTestId("a-steps")).toHaveText("50 handfuls so far");
   const score = await num(page, "a-score");
   await expect(page.getByTestId("a-tables")).toContainText("block2.mix");
-  await expect(page.getByTestId("a-header")).toContainText("__metadata__");
+  await expect(page.getByTestId("a-header")).toContainText('"spots":{"dtype":"F32"');
+  await expect(page.getByTestId("a-header")).toContainText("data_offsets");
   const saved = page.waitForEvent("download");
   await page.getByRole("button", { name: "Save the file" }).click();
   expect((await saved).suggestedFilename()).toBe("my-model.bin");
