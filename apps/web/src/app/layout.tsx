@@ -4,6 +4,7 @@ import { auth0Enabled, getOptionalSession } from "@/auth";
 import { PwaRegister } from "@/components/pwa-register";
 import { TopBar } from "@/components/top-bar";
 import { VERSION_LABEL } from "@/lib/version";
+import { THEME_COLOR } from "@/lib/theme-color";
 import { TrackProvider, TrackSurface } from "@/lib/track";
 import "./globals.css";
 
@@ -61,10 +62,16 @@ export const metadata: Metadata = {
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
-  appleWebApp: { capable: true, title: "llm", statusBarStyle: "black-translucent" },
+  // "default", not black-translucent: iOS then reserves the status-bar strip
+  // itself and the page starts below it. With black-translucent the page runs
+  // under the clock and relies on env(safe-area-inset-top), which iOS 26
+  // standalone reports as 0, so the top bar sat under the clock (2026-11-27).
+  appleWebApp: { capable: true, title: "llm", statusBarStyle: "default" },
 };
 
-export const viewport: Viewport = { themeColor: "#0b0b0a", viewportFit: "cover" };
+// themeColor paints the reserved status-bar strip. This is the adult page; the
+// kids track swaps it for cream on the client (ThemeColorSync in lib/track).
+export const viewport: Viewport = { themeColor: THEME_COLOR.adults, viewportFit: "cover" };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const authEnabled = auth0Enabled();
