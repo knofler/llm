@@ -34,6 +34,9 @@ export const EXPLAIN: Record<string, string> = {
   gradient: "The push on every dial: which way, and how hard, turning it would change the wrongness score.",
   "gradient descent": "Nudging every dial a small step against its push, over and over, so the score keeps falling.",
   backprop: "Working out every dial's push by tracing the score backwards through the model, box by box.",
+  embedding: "A token's spot: a short list of numbers the model learns, so tokens that act alike sit close together.",
+  MLP: "Numbers in, a layer of dials, a squash, more dials, numbers out. The small thinking box between the spots and the guess.",
+  batch: "The random handful of examples one nudge looks at, instead of the whole text every time.",
 };
 
-export const LIVE_STAGES = [1, 2, 3];
+export const LIVE_STAGES = [1, 2, 3, 4];
