@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { THEME_COLOR } from "@/lib/theme-color";
 
 export type Track = "adults" | "kids";
 
@@ -36,6 +37,19 @@ export const useTrack = () => useContext(TrackContext);
 /** Whole-page wrapper: paints the track's ground and exposes data-track for focus styles. */
 export function TrackSurface({ children }: { children: React.ReactNode }) {
   const { track } = useTrack();
+
+  // Keep <meta name="theme-color"> on the track's page colour, so the strip
+  // iOS reserves above the page matches the top bar under it.
+  useEffect(() => {
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "theme-color";
+      document.head.appendChild(meta);
+    }
+    meta.content = THEME_COLOR[track];
+  }, [track]);
+
   return (
     <div
       data-track={track}
