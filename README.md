@@ -48,7 +48,10 @@ docker compose up -d                                                  # website 
 docker compose run --rm rust cargo test                               # engine tests
 docker compose run --rm rust wasm-pack build crates/engine --target web   # engine → WebAssembly
 docker compose --profile e2e run --rm e2e                             # browser smoke tests, both tracks
+docker compose --profile build run --rm build                         # production build check
 ```
+
+Run `next build` only through the `build` service. It keeps its own `.next` volume, so it can't overwrite the dev server's output and break hydration for the e2e tests.
 
 ## Layout
 

@@ -61,6 +61,27 @@ services:
     mem_limit: 1g
     restart: "no"
 
+  # Production build check (compose profile, not part of the 2 GB app stack):
+  #   docker compose --profile build run --rm build
+  # It mounts its own .next volume. A build inside `docker compose run app`
+  # shares llm-web-next with the running dev server and overwrites its output:
+  # pages still return 200 but never hydrate, so every e2e test fails. Never
+  # run `npm run build` through the app service.
+  build:
+    container_name: llm-build
+    image: node:22-bookworm-slim
+    profiles: ["build"]
+    working_dir: /app/apps/web
+    command: npm run build
+    volumes:
+      - ./:/app
+      - llm-web-node-modules:/app/apps/web/node_modules
+      - llm-web-next-build:/app/apps/web/.next
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+    mem_limit: 2g
+    restart: "no"
+
 # Pinned subnet: Docker's default pick (172.24.0.0/16) swallowed the APIM private
 # IP 172.24.51.22 and broke other local gateways. 10.89.0.0/24 is reserved for llm
 # (10.88.91.0/24 is cairn's).
@@ -73,5 +94,6 @@ networks:
 volumes:
   llm-web-node-modules:
   llm-web-next:
+  llm-web-next-build:
   llm-cargo-target:
   llm-cargo-registry:
