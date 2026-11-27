@@ -37,6 +37,9 @@ export const EXPLAIN: Record<string, string> = {
   embedding: "A token's spot: a short list of numbers the model learns, so tokens that act alike sit close together.",
   MLP: "Numbers in, a layer of dials, a squash, more dials, numbers out. The small thinking box between the spots and the guess.",
   batch: "The random handful of examples one nudge looks at, instead of the whole text every time.",
+  attention: "Each token scores the tokens before it, question against label, turns the scores into shares, and blends their messages by those shares.",
+  head: "One set of question, label and message dials: one way of choosing whom to listen to. Real models run several side by side.",
+  transformer: "A listening layer, then a small thinking layer, each with its input added back onto its output. Stack these blocks and you have the whole model.",
 };
 
-export const LIVE_STAGES = [1, 2, 3, 4];
+export const LIVE_STAGES = [1, 2, 3, 4, 5];
