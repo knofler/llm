@@ -256,7 +256,7 @@ export function BrainButton({ serverBrain = false, className }: { serverBrain?: 
       {open && (
         <div
           className={cn(
-            "absolute right-0 top-full z-40 mt-2 w-[min(32rem,calc(100vw-2rem))] rounded-2xl border p-4 shadow-2xl",
+            "absolute right-0 top-full z-40 mt-2 max-h-[calc(100dvh-8rem)] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border p-4 shadow-2xl",
             kids ? "border-2 border-k-ink bg-k-white text-k-ink" : "border-a-rule bg-a-page text-a-ink",
           )}
           onKeyDown={(e) => e.key === "Escape" && setOpen(false)}

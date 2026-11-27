@@ -17,5 +17,8 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "phone", use: { ...devices["Pixel 7"] } },
+    // Safari's engine on an iPhone screen, for the pinned top bar only. Docker
+    // only: the Playwright image ships WebKit, the CI runner image does not.
+    ...(process.env.CI ? [] : [{ name: "iphone", use: { ...devices["iPhone 13"] }, testMatch: /top-bar\.spec\.ts/ }]),
   ],
 });
